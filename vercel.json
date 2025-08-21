@@ -11,10 +11,5 @@
       "src": "/(.*)",
       "dest": "web_interface.py"
     }
-  ],
-  "functions": {
-    "web_interface.py": {
-      "runtime": "python3.9"
-    }
-  }
+  ]
 } 
