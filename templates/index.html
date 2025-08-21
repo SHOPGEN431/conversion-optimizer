@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion Rate Optimization Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .demo-info {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .demo-url {
+            font-family: monospace;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #667eea;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .recommendation {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .recommendation.high {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .recommendation.medium {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+        }
+
+        .recommendation.low {
+            border-left-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .priority-high {
+            background: #dc3545;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .priority-low {
+            background: #28a745;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .preview-frame {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .improvement-highlight {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .comparison-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .comparison-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .comparison-side h3 {
+            padding: 15px;
+            margin: 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-frame {
+            width: 100%;
+            height: 550px;
+            border: none;
+            flex: 1;
+        }
+
+        .comparison-label {
+            padding: 10px 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+            margin: 0;
+        }
+
+        .original-label {
+            background: #fef2f2;
+            color: #dc2626;
+            border-bottom: 1px solid #fecaca;
+        }
+
+        .optimized-label {
+            background: #f0fdf4;
+            color: #16a34a;
+            border-bottom: 1px solid #bbf7d0;
+        }
+
+        .comparison-controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .preview-frame-container {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1><i class="fas fa-chart-line"></i> Conversion Rate Optimization Tool</h1>
+            <p>Analyze and optimize your e-commerce product pages for better conversion rates</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Demo Analysis Section -->
+        <div class="card">
+            <h2><i class="fas fa-bolt"></i> TapePlayers.com Analysis & Optimization</h2>
+            
+            <div class="demo-info">
+                <h3><i class="fas fa-info-circle"></i> Analyzing Product Page</h3>
+                <p><strong>Product:</strong> Canon Hi8 Camcorder 8mm Tape Player</p>
+                <div class="demo-url">https://tapeplayers.com/products/canon-hi8-camcorder-tape-player-w-new-battery-usb-digitizing-software</div>
+                <p>Our AI-powered tool analyzes this e-commerce page and provides specific recommendations to improve conversion rates.</p>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn" onclick="analyzeTapePlayers()">
+                    <i class="fas fa-search"></i> Analyze Current Page
+                </button>
+                <button class="btn btn-success" onclick="generateOptimizedPage()" style="display:none;" id="generateBtn">
+                    <i class="fas fa-magic"></i> Generate CRO Improved Page
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Section -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Analyzing your page and generating optimization recommendations...</p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="hidden">
+            <div class="card">
+                <h2><i class="fas fa-chart-bar"></i> Analysis Results</h2>
+                
+                <div class="improvement-highlight">
+                    <i class="fas fa-rocket"></i> Potential Conversion Rate Improvement: <span id="totalImprovement">40-60%</span>
+                </div>
+                
+                <div id="stats" class="stats-grid"></div>
+                
+                <div id="quickWins"></div>
+                
+                <div id="recommendations"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-success" onclick="downloadReport()">
+                        <i class="fas fa-download"></i> Download Analysis Report
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optimized HTML Preview -->
+        <div id="htmlPreview" class="card hidden">
+            <h2><i class="fas fa-star"></i> Before vs After: CRO Optimization Results</h2>
+            <p>Compare the original TapePlayers.com page with your CRO-optimized version:</p>
+            
+            <div class="improvement-highlight">
+                <i class="fas fa-chart-line"></i> This optimized page implements all <span id="recommendationCount">6</span> recommendations for maximum conversion impact!
+            </div>
+            
+            <!-- Comparison Toggle Buttons -->
+            <div class="comparison-controls">
+                <button class="btn" onclick="showComparison('split')" id="splitBtn">
+                    <i class="fas fa-columns"></i> Side-by-Side Comparison
+                </button>
+                <button class="btn btn-success" onclick="showComparison('original')" id="originalBtn">
+                    <i class="fas fa-eye"></i> Original Page
+                </button>
+                <button class="btn btn-warning" onclick="showComparison('optimized')" id="optimizedBtn">
+                    <i class="fas fa-magic"></i> Optimized Page
+                </button>
+            </div>
+            
+            <!-- Split View Container -->
+            <div id="splitView" class="comparison-container">
+                <div class="comparison-side">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Original Page (Before)</h3>
+                    <div class="comparison-label original-label">Current Conversion Rate: Baseline</div>
+                    <iframe class="comparison-frame" src="https://tapeplayers.com/products/canon-hi8-camcorder-tape-player-w-new-battery-usb-digitizing-software"></iframe>
+                </div>
+                <div class="comparison-side">
+                    <h3><i class="fas fa-star"></i> Optimized Page (After)</h3>
+                    <div class="comparison-label optimized-label">Estimated +40-60% Conversion Rate</div>
+                    <iframe id="optimizedFrame" class="comparison-frame" srcdoc=""></iframe>
+                </div>
+            </div>
+            
+            <!-- Single View Container -->
+            <div id="singleView" class="preview-frame-container hidden">
+                <iframe id="singleFrame" class="preview-frame" src=""></iframe>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-warning" onclick="downloadHTML()">
+                    <i class="fas fa-download"></i> Download Optimized HTML
+                </button>
+                <button class="btn" onclick="openInNewTab()">
+                    <i class="fas fa-external-link-alt"></i> Open Optimized Page in New Tab
+                </button>
+                <button class="btn btn-success" onclick="downloadComparison()">
+                    <i class="fas fa-camera"></i> Download Comparison Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentReport = null;
+        let optimizedHTML = null;
+
+        // Analyze TapePlayers.com page
+        async function analyzeTapePlayers() {
+            showLoading();
+            
+            try {
+                const response = await fetch('/analyze-tapeplayers');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentReport = data.report;
+                    displayResults(data.report);
+                    document.getElementById('generateBtn').style.display = 'inline-block';
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Failed to analyze page: ' + error.message);
+            }
+            
+            hideLoading();
+        }
+
+        // Generate optimized page
+        async function generateOptimizedPage() {
+            if (!currentReport) {
+                showError('Please run analysis first');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const response = await fetch('/generate-html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ recommendations: currentReport.recommendations_by_category })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    optimizedHTML = data.html;
+                    document.getElementById('optimizedFrame').srcdoc = optimizedHTML;
+                    document.getElementById('recommendationCount').textContent = currentReport.total_recommendations;
+                    document.getElementById('htmlPreview').classList.remove('hidden');
+                    
+                    // Scroll to preview
+                    document.getElementById('htmlPreview').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start' 
+                    });
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Failed to generate optimized page: ' + error.message);
+            }
+            
+            hideLoading();
+        }
+
+        function displayResults(report) {
+            // Display stats
+            const statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-number">${report.total_recommendations}</div>
+                    <div class="stat-label">Optimization Opportunities</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${report.priority_distribution.High || 0}</div>
+                    <div class="stat-label">High Priority Fixes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${report.priority_distribution.Medium || 0}</div>
+                    <div class="stat-label">Medium Priority</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${report.priority_distribution.Low || 0}</div>
+                    <div class="stat-label">Low Priority</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHtml;
+
+            // Display quick wins
+            const quickWinsHtml = `
+                <h3><i class="fas fa-star"></i> Quick Wins (High Impact)</h3>
+                ${report.quick_wins.map((win, index) => `
+                    <div class="recommendation high">
+                        <div class="priority-badge priority-high">High Priority</div>
+                        <h4>${index + 1}. ${win.title}</h4>
+                        <p><strong>Impact:</strong> ${win.impact}</p>
+                        <p><strong>Estimated Improvement:</strong> ${win.estimated_improvement}</p>
+                        <p><strong>Implementation:</strong> ${win.implementation}</p>
+                    </div>
+                `).join('')}
+            `;
+            document.getElementById('quickWins').innerHTML = quickWinsHtml;
+
+            // Display all recommendations by category
+            let recommendationsHtml = '<h3><i class="fas fa-list"></i> All Optimization Recommendations</h3>';
+            
+            for (const [category, recommendations] of Object.entries(report.recommendations_by_category)) {
+                recommendationsHtml += `<h4><i class="fas fa-folder"></i> ${category}</h4>`;
+                
+                recommendations.forEach(rec => {
+                    const priorityClass = rec.priority.toLowerCase();
+                    recommendationsHtml += `
+                        <div class="recommendation ${priorityClass}">
+                            <div class="priority-badge priority-${priorityClass}">${rec.priority} Priority</div>
+                            <h4>${rec.title}</h4>
+                            <p><strong>Description:</strong> ${rec.description}</p>
+                            <p><strong>Impact:</strong> ${rec.impact}</p>
+                            <p><strong>Implementation:</strong> ${rec.implementation}</p>
+                            <p><strong>Estimated Improvement:</strong> ${rec.estimated_improvement}</p>
+                            ${rec.code_example ? `
+                                <details style="margin-top: 10px;">
+                                    <summary style="cursor: pointer; color: #667eea; font-weight: bold;">
+                                        <i class="fas fa-code"></i> View Implementation Code
+                                    </summary>
+                                    <div class="code-example">${rec.code_example}</div>
+                                </details>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('recommendations').innerHTML = recommendationsHtml;
+            document.getElementById('results').classList.remove('hidden');
+        }
+
+        async function downloadReport() {
+            if (!currentReport) return;
+            
+            try {
+                const response = await fetch('/download-report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ report: currentReport })
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `tapeplayers-cro-analysis-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                }
+            } catch (error) {
+                showError('Failed to download report: ' + error.message);
+            }
+        }
+
+        function downloadHTML() {
+            if (!optimizedHTML) return;
+            
+            const blob = new Blob([optimizedHTML], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tapeplayers-optimized-page-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function openInNewTab() {
+            if (!optimizedHTML) return;
+            
+            const newWindow = window.open();
+            newWindow.document.write(optimizedHTML);
+            newWindow.document.close();
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('htmlPreview').classList.add('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showError(message) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-error';
+            alert.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            document.querySelector('.container').insertBefore(alert, document.querySelector('.card'));
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function showComparison(viewType) {
+            document.getElementById('splitView').classList.add('hidden');
+            document.getElementById('singleView').classList.add('hidden');
+
+            if (viewType === 'split') {
+                document.getElementById('splitView').classList.remove('hidden');
+            } else if (viewType === 'original') {
+                document.getElementById('singleView').classList.remove('hidden');
+                document.getElementById('singleFrame').src = "https://tapeplayers.com/products/canon-hi8-camcorder-tape-player-w-new-battery-usb-digitizing-software";
+            } else if (viewType === 'optimized') {
+                document.getElementById('singleView').classList.remove('hidden');
+                document.getElementById('singleFrame').srcdoc = optimizedHTML;
+            }
+        }
+
+        async function downloadComparison() {
+            if (!currentReport) {
+                showError('Please run analysis first to generate an optimized page.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/download-comparison', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        original_url: "https://tapeplayers.com/products/canon-hi8-camcorder-tape-player-w-new-battery-usb-digitizing-software",
+                        optimized_html: optimizedHTML
+                    })
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `tapeplayers-cro-comparison-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.zip`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                } else {
+                    const errorData = await response.json();
+                    showError(errorData.error || 'Failed to download comparison report.');
+                }
+            } catch (error) {
+                showError('Failed to download comparison report: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html> 
