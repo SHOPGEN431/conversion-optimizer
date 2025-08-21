@@ -201,6 +201,124 @@
             margin: 0 auto 20px;
         }
 
+        .optimization-loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .optimization-steps {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .optimization-step {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0.5;
+            transform: translateX(-20px);
+            transition: all 0.5s ease;
+        }
+
+        .optimization-step.active {
+            opacity: 1;
+            transform: translateX(0);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .optimization-step.completed {
+            opacity: 1;
+            transform: translateX(0);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 1.2em;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
+
+        .optimization-status {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 20px;
+        }
+
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .metric-label {
+            font-size: 0.8em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -509,6 +627,98 @@
             <p>Analyzing your page and generating optimization recommendations...</p>
         </div>
 
+        <!-- Optimization Loading Section -->
+        <div id="optimizationLoading" class="optimization-loading">
+            <div class="optimization-status">
+                <i class="fas fa-magic"></i> Optimizing Your Page for Maximum Conversions...
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="optimizationProgress"></div>
+            </div>
+            
+            <div class="optimization-steps">
+                <div class="optimization-step" id="step1">
+                    <div class="step-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Optimizing Page Speed</div>
+                        <div class="step-description">Compressing images, minifying CSS/JS, implementing lazy loading...</div>
+                    </div>
+                </div>
+                
+                <div class="optimization-step" id="step2">
+                    <div class="step-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Making Mobile Responsive</div>
+                        <div class="step-description">Adapting layout for mobile devices, optimizing touch targets...</div>
+                    </div>
+                </div>
+                
+                <div class="optimization-step" id="step3">
+                    <div class="step-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Adding Social Proof</div>
+                        <div class="step-description">Integrating customer reviews, testimonials, trust badges...</div>
+                    </div>
+                </div>
+                
+                <div class="optimization-step" id="step4">
+                    <div class="step-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Enhancing Trust Elements</div>
+                        <div class="step-description">Adding SSL badges, money-back guarantees, security certifications...</div>
+                    </div>
+                </div>
+                
+                <div class="optimization-step" id="step5">
+                    <div class="step-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Optimizing Call-to-Actions</div>
+                        <div class="step-description">Creating compelling CTAs with urgency and value propositions...</div>
+                    </div>
+                </div>
+                
+                <div class="optimization-step" id="step6">
+                    <div class="step-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Final Performance Testing</div>
+                        <div class="step-description">Running speed tests, checking mobile responsiveness...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="performance-metrics">
+                <div class="metric-card">
+                    <div class="metric-value" id="speedMetric">4.2s</div>
+                    <div class="metric-label">Page Load Time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="mobileMetric">23/100</div>
+                    <div class="metric-label">Mobile Score</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="croMetric">2.8/10</div>
+                    <div class="metric-label">CRO Score</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="conversionMetric">1.2%</div>
+                    <div class="metric-label">Conversion Rate</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Results Section -->
         <div id="results" class="hidden">
             <div class="card">
@@ -663,9 +873,12 @@
                 return;
             }
             
-            showLoading();
+            showOptimizationLoading();
             
             try {
+                // Simulate optimization process with dramatic animation
+                await runOptimizationAnimation();
+                
                 const response = await fetch('/generate-html', {
                     method: 'POST',
                     headers: {
@@ -694,7 +907,58 @@
                 showError('Failed to generate optimized page: ' + error.message);
             }
             
-            hideLoading();
+            hideOptimizationLoading();
+        }
+
+        async function runOptimizationAnimation() {
+            const steps = [
+                { id: 'step1', duration: 2000, progress: 16, speed: '2.1s', mobile: '23/100', cro: '2.8/10', conversion: '1.2%' },
+                { id: 'step2', duration: 1800, progress: 33, speed: '1.8s', mobile: '45/100', cro: '3.2/10', conversion: '1.4%' },
+                { id: 'step3', duration: 2200, progress: 50, speed: '1.8s', mobile: '45/100', cro: '4.1/10', conversion: '1.8%' },
+                { id: 'step4', duration: 1900, progress: 66, speed: '1.8s', mobile: '45/100', cro: '5.3/10', conversion: '2.1%' },
+                { id: 'step5', duration: 2100, progress: 83, speed: '1.8s', mobile: '45/100', cro: '6.7/10', conversion: '2.4%' },
+                { id: 'step6', duration: 1500, progress: 100, speed: '1.8s', mobile: '78/100', cro: '8.2/10', conversion: '3.1%' }
+            ];
+
+            for (let i = 0; i < steps.length; i++) {
+                const step = steps[i];
+                
+                // Activate current step
+                document.getElementById(step.id).classList.add('active');
+                
+                // Update progress bar
+                document.getElementById('optimizationProgress').style.width = step.progress + '%';
+                
+                // Update metrics with animation
+                await animateMetric('speedMetric', step.speed);
+                await animateMetric('mobileMetric', step.mobile);
+                await animateMetric('croMetric', step.cro);
+                await animateMetric('conversionMetric', step.conversion);
+                
+                // Wait for step duration
+                await new Promise(resolve => setTimeout(resolve, step.duration));
+                
+                // Mark step as completed
+                document.getElementById(step.id).classList.remove('active');
+                document.getElementById(step.id).classList.add('completed');
+            }
+        }
+
+        async function animateMetric(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            const currentValue = element.textContent;
+            
+            // Simple animation - just update the value
+            element.textContent = targetValue;
+            
+            // Add a brief highlight effect
+            element.style.transform = 'scale(1.1)';
+            element.style.color = '#059669';
+            
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+                element.style.color = '#10b981';
+            }, 300);
         }
 
         function displayResults(report) {
@@ -854,6 +1118,21 @@
 
         function hideLoading() {
             document.getElementById('loading').style.display = 'none';
+        }
+
+        function showOptimizationLoading() {
+            document.getElementById('optimizationLoading').style.display = 'block';
+            document.getElementById('htmlPreview').classList.add('hidden');
+            
+            // Scroll to optimization loading
+            document.getElementById('optimizationLoading').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start' 
+            });
+        }
+
+        function hideOptimizationLoading() {
+            document.getElementById('optimizationLoading').style.display = 'none';
         }
 
         function showError(message) {
